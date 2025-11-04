@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <title>SQL PATLATMA </title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- MOBİL UYUMLULUK İÇİN EKLENDİ -->
+    <style>
+        * {
+            box-sizing: border-box; /* EKLENDİ */
+        }
+        /* Ekran görüntünüzdekine benzer bir koyu tema */
+        body {
+            background-color: #1E1E1E; /* Koyu gri arkaplan */
+            color: #D4D4D4; /* Genel metin rengi (açık gri) */
+            font-family: Consolas, 'Courier New', monospace;
+            font-size: 15px; /* DEĞİŞTİ: 14px -> 15px */
+            line-height: 1.6;
+            padding: 10px; /* DEĞİŞTİ: 20px -> 10px */
+            margin: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 10px auto; /* DEĞİŞTİ: 20px auto -> 10px auto */
+            padding: 15px; /* DEĞİŞTİ: 20px -> 15px */
+            border: 1px solid #333;
+            border-radius: 8px;
+            width: 100%; /* EKLENDİ: Tam genişlik al, max-width ile sınırla */
+        }
+        h1 {
+            color: #569CD6;
+            border-bottom: 2px solid #569CD6;
+            padding-bottom: 10px;
+            word-break: break-word; /* EKLENDİ: Uzun başlıklar taşmasın */
+        }
+        h2 {
+            color: #4EC9B0;
+            margin-top: 40px;
+            border-bottom: 1px solid #444;
+            padding-bottom: 5px;
+            word-break: break-word; /* EKLENDİ: Uzun başlıklar taşmasın */
+        }
+        pre {
+            background-color: #252526;
+            padding: 10px; /* DEĞİŞTİ: 15px -> 10px */
+            border-radius: 5px;
+            overflow-x: auto; /* Kodlar sığmazsa yatay kaydırma çubuğu */
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-size: 14px; /* EKLENDİ: Kod yazı tipini ayarla */
+        }
+        /* Kod renklendirme sınıfları */
+        .comment { color: #6A9955; } /* Yorumlar (yeşil) */
+        .keyword { color: #569CD6; } /* Anahtar Kelimeler (mavi) - SELECT, FROM, WHERE, vb. */
+        .function { color: #DCDCAA; } /* Fonksiyonlar (sarı) - COUNT, AVG, MAX, vb. */
+        .string { color: #CE9178; } /* String'ler (turuncu) - 'K', 'B003', vb. */
+        .operator { color: #D4D4D4; } /* Operatörler (*, /, =, >) (açık gri) */
+        .number { color: #B5CEA8; } /* Sayılar (soluk yeşil) */
+        .identifier { color: #9CDCFE; } /* Değişken/Sütun adları (açık mavi) */
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>SQL  PATLATMA</h1>
+
+        <!-- ====================================================== -->
+        <!-- BÖLÜM 1: İLK 22 SORGU -->
+        <!-- ====================================================== -->
+        <h2>Bölüm 1: Temel Sorgular (22 Sorgu)</h2>
+
+        <pre>
+<span class="comment">-- 1. Tüm çalışanların bilgileri</span>
+<span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> <span class="identifier">Staff</span>;
+
+<span class="comment">-- 2. Personel No, Ad, Soyad ve Aylık Maaş (Maaş yıllıktır)</span>
+<span class="keyword">SELECT</span> <span class="identifier">staffNo</span>, <span class="identifier">fName</span>, <span class="identifier">lName</span>, <span class="identifier">salary</span> <span class="operator">/</span> <span class="number">12</span> <span class="keyword">AS</span> <span class="identifier">aylik_maas</span> <span class="keyword">FROM</span> <span class="identifier">Staff</span>;
+
+<span class="comment">-- 3. Sadece Kadın çalışanların bilgileri</span>
+<span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> <span class="identifier">Staff</span> <span class="keyword">WHERE</span> <span class="identifier">sex</span> <span class="operator">=</span> <span class="string">'K'</span>;
+
+<span class="comment">-- 4. Maaşı 20000 ve 30000 arasında olanların pozisyon ve maaşı</span>
+<span class="keyword">SELECT</span> <span class="identifier">position</span>, <span class="identifier">salary</span> <span class="keyword">FROM</span> <span class="identifier">Staff</span> <span class="keyword">WHERE</span> <span class="identifier">salary</span> <span class="keyword">BETWEEN</span> <span class="number">20000</span> <span class="keyword">AND</span> <span class="number">30000</span>;
+
+<span class="comment">-- 5. branchNo'su B003 olan Kadınların isim, soyisim ve pozisyonu</span>
+<span class="keyword">SELECT</span> <span class="identifier">fName</span>, <span class="identifier">lName</span>, <span class="identifier">position</span> <span class="keyword">FROM</span> <span class="identifier">Staff</span> <span class="keyword">WHERE</span> <span class="identifier">branchNo</span> <span class="operator">=</span> <span class="string">'B003'</span> <span class="keyword">AND</span> <span class="identifier">sex</span> <span class="operator">=</span> <span class="string">'K'</span>;
+
+<span class="comment">-- 6. Manager veya Supervisor olan erkeklerin bilgileri</span>
+<span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> <span class="identifier">Staff</span> <span class="keyword">WHERE</span> <span class="identifier">position</span> <span class="keyword">IN</span> (<span class="string">'Manager'</span>, <span class="string">'Supervisor'</span>) <span class="keyword">AND</span> <span class="identifier">sex</span> <span class="operator">=</span> <span class="string">'E'</span>;
+
+<span class="comment">-- 7. Tüm Erkek çalışanların maaşlarının toplamı</span>
+<span class="keyword">SELECT</span> <span class="function">SUM</span>(<span class="identifier">salary</span>) <span class="keyword">AS</span> <span class="identifier">erkek_calisan_toplam_maas</span> <span class="keyword">FROM</span> <span class="identifier">Staff</span> <span class="keyword">WHERE</span> <span class="identifier">sex</span> <span class="operator">=</span> <span class="string">'E'</span>;
+
+<span class="comment">-- 8. Concat ile isim soyisim birleştirme</span>
+<span class="keyword">SELECT</span> <span class="function">CONCAT</span>(<span class="identifier">fName</span>, <span class="string">' '</span>, <span class="identifier">lName</span>) <span class="keyword">AS</span> <span class="identifier">ad_soyad</span> <span class="keyword">FROM</span> <span class="identifier">Staff</span>;
+
+<span class="comment">-- 9. Maaşı yüksekten düşüğe sıralama</span>
+<span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> <span class="identifier">Staff</span> <span class="keyword">ORDER</span> <span class="keyword">BY</span> <span class="identifier">salary</span> <span class="keyword">DESC</span>;
+
+<span class="comment">-- 10. Maaşı en yüksek olan Kadın çalışanın maaşı</span>
+<span class="keyword">SELECT</span> <span class="function">MAX</span>(<span class="identifier">salary</span>) <span class="keyword">AS</span> <span class="identifier">en_yuksek_kadin_maasi</span> <span class="keyword">FROM</span> <span class="identifier">Staff</span> <span class="keyword">WHERE</span> <span class="identifier">sex</span> <span class="operator">=</span> <span class="string">'K'</span>;
+
+<span class="comment">-- 11. Viewing'de clientNo'su CR56 olanların yorum ve mülk numarası</span>
+<span class="keyword">SELECT</span> <span class="identifier">propertyNo</span>, <span class="identifier">comment</span> <span class="keyword">FROM</span> <span class="identifier">Viewing</span> <span class="keyword">WHERE</span> <span class="identifier">clientNo</span> <span class="operator">=</span> <span class="string">'CR56'</span>;
+
+<span class="comment">-- 12. Viewing tablosundan benzersiz property numaraları</span>
+<span class="keyword">SELECT</span> <span class="keyword">DISTINCT</span> <span class="identifier">propertyNo</span> <span class="keyword">FROM</span> <span class="identifier">Viewing</span>;
+
+<span class="comment">-- 13. Her şubedeki çalışan sayısı</span>
+<span class="keyword">SELECT</span> <span class="identifier">branchNo</span>, <span class="function">COUNT</span>(<span class="operator">*</span>) <span class="keyword">AS</span> <span class="identifier">calisan_sayisi</span> <span class="keyword">FROM</span> <span class="identifier">Staff</span> <span class="keyword">GROUP</span> <span class="keyword">BY</span> <span class="identifier">branchNo</span>;
+
+<span class="comment">-- 14. Aynı şehirde bulunan şubeler (Birden fazla şubesi olan şehirler)</span>
+<span class="keyword">SELECT</span> <span class="identifier">city</span> <span class="keyword">FROM</span> <span class="identifier">Branch</span> <span class="keyword">GROUP</span> <span class="keyword">BY</span> <span class="identifier">city</span> <span class="keyword">HAVING</span> <span class="function">COUNT</span>(<span class="operator">*</span>) <span class="operator">></span> <span class="number">1</span>;
+
+<span class="comment">-- 15. Pozisyona göre ortalama maaşlar</span>
+<span class="keyword">SELECT</span> <span class="identifier">position</span>, <span class="function">AVG</span>(<span class="identifier">salary</span>) <span class="keyword">AS</span> <span class="identifier">ortalama_maas</span> <span class="keyword">FROM</span> <span class="identifier">Staff</span> <span class="keyword">GROUP</span> <span class="keyword">BY</span> <span class="identifier">position</span>;
+
+<span class="comment">-- 16. Maaşı 25.000’in üzerinde olanların isim ve pozisyonu</span>
+<span class="keyword">SELECT</span> <span class="identifier">fName</span>, <span class="identifier">lName</span>, <span class="identifier">position</span> <span class="keyword">FROM</span> <span class="identifier">Staff</span> <span class="keyword">WHERE</span> <span class="identifier">salary</span> <span class="operator">></span> <span class="number">25000</span>;
+
+<span class="comment">-- 17. Belirli bir şubedeki (ör. ‘London’) çalışanlar</span>
+<span class="keyword">SELECT</span> <span class="identifier">s</span>.<span class="operator">*</span>
+<span class="keyword">FROM</span> <span class="identifier">Staff</span> <span class="identifier">s</span>
+<span class="keyword">JOIN</span> <span class="identifier">Branch</span> <span class="identifier">b</span> <span class="keyword">ON</span> <span class="identifier">s</span>.<span class="identifier">branchNo</span> <span class="operator">=</span> <span class="identifier">b</span>.<span class="identifier">branchNo</span>
+<span class="keyword">WHERE</span> <span class="identifier">b</span>.<span class="identifier">city</span> <span class="operator">=</span> <span class="string">'London'</span>;
+
+<span class="comment">-- 18. Şubelerdeki pozisyon dağılımı</span>
+<span class="keyword">SELECT</span> <span class="identifier">branchNo</span>, <span class="identifier">position</span>, <span class="function">COUNT</span>(<span class="operator">*</span>) <span class="keyword">AS</span> <span class="identifier">pozisyon_sayisi</span>
+<span class="keyword">FROM</span> <span class="identifier">Staff</span>
+<span class="keyword">GROUP</span> <span class="keyword">BY</span> <span class="identifier">branchNo</span>, <span class="identifier">position</span>
+<span class="keyword">ORDER</span> <span class="keyword">BY</span> <span class="identifier">branchNo</span>, <span class="identifier">position</span>;
+
+<span class="comment">-- 19. En az 3 yıldır çalışanlar (hireDate varsayıldı) (MySQL)</span>
+<span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> <span class="identifier">Staff</span> <span class="keyword">WHERE</span> <span class="identifier">hireDate</span> <span class="operator">&lt;=</span> <span class="function">DATE_SUB</span>(<span class="function">CURDATE</span>(), <span class="keyword">INTERVAL</span> <span class="number">3</span> <span class="keyword">YEAR</span>);
+
+<span class="comment">-- 20. Her şubedeki en yüksek maaşı alan çalışan (Window Function)</span>
+<span class="keyword">WITH</span> <span class="identifier">RankedStaff</span> <span class="keyword">AS</span> (
+    <span class="keyword">SELECT</span> <span class="identifier">s</span>.<span class="operator">*</span>,
+           <span class="function">ROW_NUMBER</span>() <span class="keyword">OVER</span>(<span class="keyword">PARTITION</span> <span class="keyword">BY</span> <span class="identifier">s</span>.<span class="identifier">branchNo</span> <span class="keyword">ORDER</span> <span class="keyword">BY</span> <span class="identifier">s</span>.<span class="identifier">salary</span> <span class="keyword">DESC</span>) <span class="keyword">as</span> <span class="identifier">rn</span>
+    <span class="keyword">FROM</span> <span class="identifier">Staff</span> <span class="identifier">s</span>
+)
+<span class="keyword">SELECT</span> <span class="identifier">staffNo</span>, <span class="identifier">fName</span>, <span class="identifier">lName</span>, <span class="identifier">position</span>, <span class="identifier">salary</span>, <span class="identifier">branchNo</span>
+<span class="keyword">FROM</span> <span class="identifier">RankedStaff</span>
+<span class="keyword">WHERE</span> <span class="identifier">rn</span> <span class="operator">=</span> <span class="number">1</span>;
+
+<span class="comment">-- 21. Her pozisyon için en düşük ve en yüksek maaş</span>
+<span class="keyword">SELECT</span> <span class="identifier">position</span>, <span class="function">MIN</span>(<span class="identifier">salary</span>) <span class="keyword">AS</span> <span class="identifier">en_dusuk_maas</span>, <span class="function">MAX</span>(<span class="identifier">salary</span>) <span class="keyword">AS</span> <span class="identifier">en_yuksek_maas</span>
+<span class="keyword">FROM</span> <span class="identifier">Staff</span>
+<span class="keyword">GROUP</span> <span class="keyword">BY</span> <span class="identifier">position</span>;
+
+<span class="comment">-- 22. Her pozisyonun ortalama maaşı ve çalışan sayısı</span>
+<span class="keyword">SELECT</span> <span class="identifier">position</span>, <span class="function">AVG</span>(<span class="identifier">salary</span>) <span class="keyword">AS</span> <span class="identifier">ortalama_maas</span>, <span class="function">COUNT</span>(<span class="operator">*</span>) <span class="keyword">AS</span> <span class="identifier">calisan_sayisi</span>
+<span class="keyword">FROM</span> <span class="identifier">Staff</span>
+<span class="keyword">GROUP</span> <span class="keyword">BY</span> <span class="identifier">position</span>;
+</pre>
+
+        <!-- ====================================================== -->
+        <!-- BÖLÜM 2: İLERİ SEVİYE SORGULAR (13 Sorgu) -->
+        <!-- ====================================================== -->
+        <h2>Bölüm 2: İleri Seviye Sorgular (Grup 1)</h2>
+
+        <pre>
+<span class="comment">-- 1. Maaşı, tüm maaşların ortalamasından daha yüksek olanlar</span>
+<span class="keyword">SELECT</span> <span class="identifier">staffNo</span>, <span class="identifier">fName</span>, <span class="identifier">lName</span>, <span class="identifier">position</span>
+<span class="keyword">FROM</span> <span class="identifier">Staff</span>
+<span class="keyword">WHERE</span> <span class="identifier">salary</span> <span class="operator">></span> (<span class="keyword">SELECT</span> <span class="function">AVG</span>(<span class="identifier">salary</span>) <span class="keyword">FROM</span> <span class="identifier">Staff</span>);
+
+<span class="comment">-- 2. Birden fazla elemanı olan şubelerin eleman sayısı ve maaş toplamı</span>
+<span class="keyword">SELECT</span> <span class="identifier">branchNo</span>, <span class="function">COUNT</span>(<span class="operator">*</span>) <span class="keyword">AS</span> <span class="identifier">eleman_sayisi</span>, <span class="function">SUM</span>(<span class="identifier">salary</span>) <span class="keyword">AS</span> <span class="identifier">toplam_maas</span>
+<span class="keyword">FROM</span> <span class="identifier">Staff</span>
+<span class="keyword">GROUP</span> <span class="keyword">BY</span> <span class="identifier">branchNo</span>
+<span class="keyword">HAVING</span> <span class="function">COUNT</span>(<span class="operator">*</span>) <span class="operator">></span> <span class="number">1</span>;
+
+<span class="comment">-- 3. 'B003' şubesindekilerin en az birinden maaşı yüksek olanlar</span>
+<span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> <span class="identifier">Staff</span>
+<span class="keyword">WHERE</span> <span class="identifier">salary</span> <span class="operator">></span> <span class="keyword">ANY</span> (<span class="keyword">SELECT</span> <span class="identifier">salary</span> <span class="keyword">FROM</span> <span class="identifier">Staff</span> <span class="keyword">WHERE</span> <span class="identifier">branchNo</span> <span class="operator">=</span> <span class="string">'B003'</span>);
+
+<span class="comment">-- 4. Londra'da çalışan personelin adı, soyadı, şube numarası (maaşa göre sıralı)</span>
+<span class="keyword">SELECT</span> <span class="identifier">s</span>.<span class="identifier">fName</span>, <span class="identifier">s</span>.<span class="identifier">lName</span>, <span class="identifier">s</span>.<span class="identifier">branchNo</span>, <span class="identifier">s</span>.<span class="identifier">salary</span>
+<span class="keyword">FROM</span> <span class="identifier">Staff</span> <span class="identifier">s</span>
+<span class="keyword">JOIN</span> <span class="identifier">Branch</span> <span class="identifier">b</span> <span class="keyword">ON</span> <span class="identifier">s</span>.<span class="identifier">branchNo</span> <span class="operator">=</span> <span class="identifier">b</span>.<span class="identifier">branchNo</span>
+<span class="keyword">WHERE</span> <span class="identifier">b</span>.<span class="identifier">city</span> <span class="operator">=</span> <span class="string">'London'</span>
+<span class="keyword">ORDER</span> <span class="keyword">BY</span> <span class="identifier">s</span>.<span class="identifier">salary</span> <span class="keyword">DESC</span>;
+
+<span class="comment">-- 5. Maaşı 20000’den düşük olan Erkek çalışanların şehirleri (alfabetik)</span>
+<span class="keyword">SELECT</span> <span class="keyword">DISTINCT</span> <span class="identifier">b</span>.<span class="identifier">city</span>
+<span class="keyword">FROM</span> <span class="identifier">Staff</span> <span class="identifier">s</span>
+<span class="keyword">JOIN</span> <span class="identifier">Branch</span> <span class="identifier">b</span> <span class="keyword">ON</span> <span class="identifier">s</span>.<span class="identifier">branchNo</span> <span class="operator">=</span> <span class="identifier">b</span>.<span class="identifier">branchNo</span>
+<span class="keyword">WHERE</span> <span class="identifier">s</span>.<span class="identifier">salary</span> <span class="operator">&lt;</span> <span class="number">20000</span> <span class="keyword">AND</span> <span class="identifier">s</span>.<span class="identifier">sex</span> <span class="operator">=</span> <span class="string">'E'</span>
+<span class="keyword">ORDER</span> <span class="keyword">BY</span> <span class="identifier">b</span>.<span class="identifier">city</span> <span class="keyword">ASC</span>;
+
+<span class="comment">-- 6. London veya Glasgow'daki en yüksek ve en düşük maaş farkı</span>
+<span class="keyword">SELECT</span> <span class="function">MAX</span>(<span class="identifier">s</span>.<span class="identifier">salary</span>) <span class="operator">-</span> <span class="function">MIN</span>(<span class="identifier">s</span>.<span class="identifier">salary</span>) <span class="keyword">AS</span> <span class="identifier">maas_farki</span>
+<span class="keyword">FROM</span> <span class="identifier">Staff</span> <span class="identifier">s</span>
+<span class="keyword">JOIN</span> <span class="identifier">Branch</span> <span class="identifier">b</span> <span class="keyword">ON</span> <span class="identifier">s</span>.<span class="identifier">branchNo</span> <span class="operator">=</span> <span class="identifier">b</span>.<span class="identifier">branchNo</span>
+<span class="keyword">WHERE</span> <span class="identifier">b</span>.<span class="identifier">city</span> <span class="keyword">IN</span> (<span class="string">'London'</span>, <span class="string">'Glasgow'</span>);
+
+<span class="comment">-- 7. Viewing tablosunda yorumu olmayan kayıtlar</span>
+<span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> <span class="identifier">Viewing</span> <span class="keyword">WHERE</span> <span class="identifier">comment</span> <span class="keyword">IS</span> <span class="keyword">NULL</span>;
+
+<span class="comment">-- 8. Viewing tablosundaki benzersiz propertyNo sayısı</span>
+<span class="keyword">SELECT</span> <span class="function">COUNT</span>(<span class="keyword">DISTINCT</span> <span class="identifier">propertyNo</span>) <span class="keyword">AS</span> <span class="identifier">benzersiz_mulk_sayisi</span> <span class="keyword">FROM</span> <span class="identifier">Viewing</span>;
+
+<span class="comment">-- 9. Client tablosunda mail adresleri gmail olanlar</span>
+<span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> <span class="identifier">Client</span> <span class="keyword">WHERE</span> <span class="identifier">email</span> <span class="keyword">LIKE</span> <span class="string">'%@gmail.com'</span>;
+
+<span class="comment">-- 10. PropertyforRent tablosunda 'type' bilgisine göre toplam oda sayısı</span>
+<span class="keyword">SELECT</span> <span class="identifier">type</span>, <span class="function">SUM</span>(<span class="identifier">rooms</span>) <span class="keyword">AS</span> <span class="identifier">toplam_oda_sayisi</span>
+<span class="keyword">FROM</span> <span class="identifier">PropertyForRent</span>
+<span class="keyword">GROUP</span> <span class="keyword">BY</span> <span class="identifier">type</span>;
+
+<span class="comment">-- 11. En az iki kadın çalışanı olan şubeler</span>
+<span class="keyword">SELECT</span> <span class="identifier">branchNo</span>, <span class="function">COUNT</span>(<span class="operator">*</span>) <span class="keyword">AS</span> <span class="identifier">kadin_calisan_sayisi</span>
+<span class="keyword">FROM</span> <span class="identifier">Staff</span>
+<span class="keyword">WHERE</span> <span class="identifier">sex</span> <span class="operator">=</span> <span class="string">'K'</span>
+<span class="keyword">GROUP</span> <span class="keyword">BY</span> <span class="identifier">branchNo</span>
+<span class="keyword">HAVING</span> <span class="function">COUNT</span>(<span class="operator">*</span>) <span class="operator">>=</span> <span class="number">2</span>;
+
+<span class="comment">-- 12. Kirası 450'den fazla olan mülk sayısı</span>
+<span class="keyword">SELECT</span> <span class="function">COUNT</span>(<span class="operator">*</span>) <span class="keyword">AS</span> <span class="identifier">mulk_sayisi</span>
+<span class="keyword">FROM</span> <span class="identifier">PropertyForRent</span>
+<span class="keyword">WHERE</span> <span class="identifier">rent</span> <span class="operator">></span> <span class="number">450</span>;
+
+<span class="comment">-- 13. Tüm manager'ların toplam sayısı ve maaşlarının toplamı</span>
+<span class="keyword">SELECT</span> <span class="function">COUNT</span>(<span class="operator">*</span>) <span class="keyword">AS</span> <span class="identifier">manager_sayisi</span>, <span class="function">SUM</span>(<span class="identifier">salary</span>) <span class="keyword">AS</span> <span class="identifier">toplam_maas</span>
+<span class="keyword">FROM</span> <span class="identifier">Staff</span>
+<span class="keyword">WHERE</span> <span class="identifier">position</span> <span class="operator">=</span> <span class="string">'Manager'</span>;
+</pre>
+
+        <!-- ====================================================== -->
+        <!-- BÖLÜM 3: İLERİ SEVİYE SORGULAR (6 Sorgu) -->
+        <!-- ====================================================== -->
+        <h2>Bölüm 3: İleri Seviye Sorgular (Grup 2)</h2>
+        
+<pre>
+<span class="comment">-- 1. Müşteri no, adı, soyadı, taşınmaz no ve yorumu</span>
+<span class="keyword">SELECT</span> <span class="identifier">v</span>.<span class="identifier">clientNo</span>, <span class="identifier">c</span>.<span class="identifier">fName</span>, <span class="identifier">c</span>.<span class="identifier">lName</span>, <span class="identifier">v</span>.<span class="identifier">propertyNo</span>, <span class="identifier">v</span>.<span class="identifier">comment</span>
+<span class="keyword">FROM</span> <span class="identifier">Viewing</span> <span class="identifier">v</span>
+<span class="keyword">JOIN</span> <span class="identifier">Client</span> <span class="identifier">c</span> <span class="keyword">ON</span> <span class="identifier">v</span>.<span class="identifier">clientNo</span> <span class="operator">=</span> <span class="identifier">c</span>.<span class="identifier">clientNo</span>;
+
+<span class="comment">-- 2. Yorum sayısı 2'den az olan taşınmazlara %5 indirim (Normal ve İndirimli Fiyat)</span>
+<span class="keyword">SELECT</span> 
+    <span class="identifier">pfr</span>.<span class="identifier">propertyNo</span>, 
+    <span class="identifier">pfr</span>.<span class="identifier">rent</span> <span class="keyword">AS</span> <span class="identifier">normal_fiyat</span>, 
+    <span class="identifier">pfr</span>.<span class="identifier">rent</span> <span class="operator">*</span> <span class="number">0.95</span> <span class="keyword">AS</span> <span class="identifier">indirimli_fiyat</span>
+<span class="keyword">FROM</span> <span class="identifier">PropertyForRent</span> <span class="identifier">pfr</span>
+<span class="keyword">LEFT</span> <span class="keyword">JOIN</span> <span class="identifier">Viewing</span> <span class="identifier">v</span> <span class="keyword">ON</span> <span class="identifier">pfr</span>.<span class="identifier">propertyNo</span> <span class="operator">=</span> <span class="identifier">v</span>.<span class="identifier">propertyNo</span>
+<span class="keyword">GROUP</span> <span class="keyword">BY</span> <span class="identifier">pfr</span>.<span class="identifier">propertyNo</span>, <span class="identifier">pfr</span>.<span class="identifier">rent</span>
+<span class="keyword">HAVING</span> <span class="function">COUNT</span>(<span class="identifier">v</span>.<span class="identifier">clientNo</span>) <span class="operator">&lt;</span> <span class="number">2</span>;
+
+<span class="comment">-- 3. Glasgow şehrindeki taşınmazların detayları ve şube bilgisi</span>
+<span class="keyword">SELECT</span> 
+    <span class="identifier">pfr</span>.<span class="identifier">propertyNo</span>, 
+    <span class="identifier">pfr</span>.<span class="identifier">rent</span>, 
+    <span class="identifier">b</span>.<span class="identifier">branchNo</span>, 
+    <span class="identifier">b</span>.<span class="identifier">city</span> <span class="keyword">AS</span> <span class="identifier">sube_sehri</span>
+<span class="keyword">FROM</span> <span class="identifier">PropertyForRent</span> <span class="identifier">pfr</span>
+<span class="keyword">JOIN</span> <span class="identifier">Branch</span> <span class="identifier">b</span> <span class="keyword">ON</span> <span class="identifier">pfr</span>.<span class="identifier">branchNo</span> <span class="operator">=</span> <span class="identifier">b</span>.<span class="identifier">branchNo</span>
+<span class="keyword">WHERE</span> <span class="identifier">pfr</span>.<span class="identifier">city</span> <span class="operator">=</span> <span class="string">'Glasgow'</span>;
+
+<span class="comment">-- 4. Şubesi olan ama satışta taşınmazı olmayan şehirler/şubeler</span>
+<span class="keyword">SELECT</span> <span class="identifier">b</span>.<span class="identifier">city</span>, <span class="identifier">b</span>.<span class="identifier">branchNo</span>
+<span class="keyword">FROM</span> <span class="identifier">Branch</span> <span class="identifier">b</span>
+<span class="keyword">WHERE</span> <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> (
+    <span class="keyword">SELECT</span> <span class="number">1</span> 
+    <span class="keyword">FROM</span> <span class="identifier">PropertyForRent</span> <span class="identifier">pfr</span> 
+    <span class="keyword">WHERE</span> <span class="identifier">pfr</span>.<span class="identifier">branchNo</span> <span class="operator">=</span> <span class="identifier">b</span>.<span class="identifier">branchNo</span>
+);
+
+<span class="comment">-- 5. Herhangi bir ilanı olmayan şubelerin tüm bilgileri</span>
+<span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> <span class="identifier">Branch</span> <span class="identifier">b</span>
+<span class="keyword">WHERE</span> <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> (
+    <span class="keyword">SELECT</span> <span class="number">1</span> 
+    <span class="keyword">FROM</span> <span class="identifier">PropertyForRent</span> <span class="identifier">pfr</span> 
+    <span class="keyword">WHERE</span> <span class="identifier">pfr</span>.<span class="identifier">branchNo</span> <span class="operator">=</span> <span class="identifier">b</span>.<span class="identifier">branchNo</span>
+);
+
+<span class="comment">-- 6. Her şubede ne kadar taşınmaz olduğu (0 olanlar dahil)</span>
+<span class="keyword">SELECT</span> <span class="identifier">b</span>.<span class="identifier">branchNo</span>, <span class="identifier">b</span>.<span class="identifier">city</span>, <span class="function">COUNT</span>(<span class="identifier">pfr</span>.<span class="identifier">propertyNo</span>) <span class="keyword">AS</span> <span class="identifier">tasinmaz_sayisi</span>
+<span class="keyword">FROM</span> <span class="identifier">Branch</span> <span class="identifier">b</span>
+<span class="keyword">LEFT</span> <span class="keyword">JOIN</span> <span class="identifier">PropertyForRent</span> <span class="identifier">pfr</span> <span class="keyword">ON</span> <span class="identifier">b</span>.<span class="identifier">branchNo</span> <span class="operator">=</span> <span class="identifier">pfr</span>.<span class="identifier">branchNo</span>
+<span class="keyword">GROUP</span> <span class="keyword">BY</span> <span class="identifier">b</span>.<span class="identifier">branchNo</span>, <span class="identifier">b</span>.<span class="identifier">city</span>
+<span class="keyword">ORDER</span> <span class="keyword">BY</span> <span class="identifier">b</span>.<span class="identifier">branchNo</span>;
+</pre>
+
+    </div>
+
+</body>
+</html>
+
